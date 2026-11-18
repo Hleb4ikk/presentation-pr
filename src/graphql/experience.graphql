@@ -1,0 +1,8 @@
+type Experience {
+  id: UUID!
+  company_name: String!
+  position: String!
+  start_date: Date!
+  end_date: Date!
+  profile_id: UUID!
+}

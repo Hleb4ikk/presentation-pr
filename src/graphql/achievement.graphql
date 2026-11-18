@@ -1,0 +1,7 @@
+type Achievement {
+  id: UUID!
+  title: String!
+  description: String!
+  profile_id: UUID!
+  experience_id: String!
+}

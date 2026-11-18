@@ -1,0 +1,14 @@
+type Profile {
+  id: UUID!
+  name: String!
+  description: String!
+  skills: [Skill]!
+  projects: [Project]!
+  social_media: [SocialMedia]!
+  experience: [Experience]!
+  achievements: [Achievement]!
+}
+
+type Query {
+  getProfile(id: UUID): Profile!
+}

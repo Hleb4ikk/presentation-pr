@@ -1,0 +1,6 @@
+type Project {
+  id: UUID!
+  name: String!
+  url: String
+  profile_id: UUID!
+}
