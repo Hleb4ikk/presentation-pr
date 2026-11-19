@@ -10,5 +10,5 @@ type Profile {
 }
 
 type Query {
-  getProfile(id: UUID): Profile!
+  profile(id: UUID): Profile!
 }

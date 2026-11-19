@@ -3,7 +3,7 @@ import type { Profile } from '../../types/Profile.js';
 
 @Resolver()
 export class ProfileResolver {
-  @Query('getProfile')
+  @Query('profile')
   getProfile(@Args('id') id: string): Profile {
     const experience_id = crypto.randomUUID();
     return {
