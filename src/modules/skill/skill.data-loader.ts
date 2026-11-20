@@ -12,12 +12,6 @@ export class SkillDataLoader {
       const allSkills: Skill[] =
         await this.skillService.fetchSkillsByProfileIds(profileIds);
 
-      profileIds.map((profileId) => ({
-        id: crypto.randomUUID(),
-        name: 'Out-box-thinking',
-        profile_id: profileId,
-      }));
-
       return profileIds.map((id) =>
         allSkills.filter((skill) => skill.profile_id === id),
       );

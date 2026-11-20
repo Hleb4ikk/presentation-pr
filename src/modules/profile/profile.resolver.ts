@@ -2,13 +2,18 @@ import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
 import type { Profile } from '../../types/Profile.js';
 import type { Skill } from '../../types/Skill.js';
 import { SkillDataLoader } from '../skill/skill.data-loader.js';
+import { Experience } from '../../types/Experience.js';
+import { ExperienceDataLoader } from '../experience/experience.data-loader.js';
 
 @Resolver('Profile')
 export class ProfileResolver {
-  constructor(readonly skillDataLoader: SkillDataLoader) {}
+  constructor(
+    readonly skillDataLoader: SkillDataLoader,
+    readonly experienceDataLoader: ExperienceDataLoader,
+  ) {}
 
   @Query('profile')
-  getProfile(@Args('id') id: string): Omit<Profile, 'skills'> {
+  getProfile(@Args('id') id: string): Omit<Profile, 'skills' | 'experience'> {
     const experience_id = crypto.randomUUID();
     return {
       id,
@@ -30,16 +35,6 @@ export class ProfileResolver {
           profile_id: id,
         },
       ],
-      experience: [
-        {
-          id: experience_id,
-          company_name: 'TwelveDevs',
-          position: 'fullstack-developer',
-          start_date: new Date(Date.now()),
-          end_date: new Date(Date.now()),
-          profile_id: id,
-        },
-      ],
       achievements: [
         {
           id: crypto.randomUUID(),
@@ -55,5 +50,12 @@ export class ProfileResolver {
   @ResolveField('skills')
   async getSkills(@Parent() profile: { id: string }): Promise<Skill[]> {
     return await this.skillDataLoader.loadByProfileId(profile.id);
+  }
+
+  @ResolveField('experience')
+  async getExperience(
+    @Parent() profile: { id: string },
+  ): Promise<Experience[]> {
+    return await this.experienceDataLoader.loadByProfileId(profile.id);
   }
 }
