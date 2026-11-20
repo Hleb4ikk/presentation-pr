@@ -5,6 +5,7 @@ import { SkillModule } from '../skill/skill.module.js';
 import { ExperienceModule } from '../experience/experience.module.js';
 import { SocialMediaModule } from '../social-media/social-media.module.js';
 import { AchievementModule } from '../achievement/achievement.module.js';
+import { ProjectModule } from '../project/project.module.js';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AchievementModule } from '../achievement/achievement.module.js';
     ExperienceModule,
     SocialMediaModule,
     AchievementModule,
+    ProjectModule,
   ],
   providers: [ProfileResolver],
   exports: [ProfileResolver],
