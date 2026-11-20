@@ -1,0 +1,913 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.Achievement",
+    "label": "Create table \"Achievement\"",
+    "summary": "Creates table \"Achievement\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Achievement"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Achievement\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Achievement\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Achievement\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Achievement\"",
+        "sql": "CREATE TABLE \"public\".\"Achievement\" (\n  \"description\" text NOT NULL,\n  \"experience_id\" uuid NOT NULL,\n  \"id\" uuid DEFAULT (gen_random_uuid()) NOT NULL,\n  \"profile_id\" uuid NOT NULL,\n  \"title\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Achievement\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Achievement\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Achievement\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Experience",
+    "label": "Create table \"Experience\"",
+    "summary": "Creates table \"Experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Experience\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Experience\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Experience\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Experience\"",
+        "sql": "CREATE TABLE \"public\".\"Experience\" (\n  \"company_name\" text NOT NULL,\n  \"end_date\" date NOT NULL,\n  \"id\" uuid DEFAULT (gen_random_uuid()) NOT NULL,\n  \"position\" text NOT NULL,\n  \"profile_id\" uuid NOT NULL,\n  \"start_date\" date NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Experience\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Experience\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Experience\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Profile",
+    "label": "Create table \"Profile\"",
+    "summary": "Creates table \"Profile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Profile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Profile\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Profile\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Profile\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Profile\"",
+        "sql": "CREATE TABLE \"public\".\"Profile\" (\n  \"description\" text NOT NULL,\n  \"id\" uuid DEFAULT (gen_random_uuid()) NOT NULL,\n  \"name\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Profile\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Profile\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Profile\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Project",
+    "label": "Create table \"Project\"",
+    "summary": "Creates table \"Project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Project\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Project\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Project\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Project\"",
+        "sql": "CREATE TABLE \"public\".\"Project\" (\n  \"id\" uuid DEFAULT (gen_random_uuid()) NOT NULL,\n  \"name\" text NOT NULL,\n  \"profile_id\" uuid NOT NULL,\n  \"url\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Project\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Project\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Project\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Skill",
+    "label": "Create table \"Skill\"",
+    "summary": "Creates table \"Skill\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Skill"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Skill\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Skill\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Skill\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Skill\"",
+        "sql": "CREATE TABLE \"public\".\"Skill\" (\n  \"id\" uuid DEFAULT (gen_random_uuid()) NOT NULL,\n  \"name\" text NOT NULL,\n  \"profile_id\" uuid NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Skill\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Skill\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Skill\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.SocialMedia",
+    "label": "Create table \"SocialMedia\"",
+    "summary": "Creates table \"SocialMedia\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "SocialMedia"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"SocialMedia\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"SocialMedia\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"SocialMedia\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"SocialMedia\"",
+        "sql": "CREATE TABLE \"public\".\"SocialMedia\" (\n  \"id\" uuid DEFAULT (gen_random_uuid()) NOT NULL,\n  \"name\" text NOT NULL,\n  \"profile_id\" uuid NOT NULL,\n  \"url\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"SocialMedia\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"SocialMedia\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"SocialMedia\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "index.Achievement.Achievement_experience_id_idx_9b808d03",
+    "label": "Create index \"Achievement_experience_id_idx_9b808d03\" on \"Achievement\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Achievement_experience_id_idx_9b808d03",
+        "table": "Achievement"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Achievement_experience_id_idx_9b808d03\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Achievement_experience_id_idx_9b808d03\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Achievement_experience_id_idx_9b808d03\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Achievement_experience_id_idx_9b808d03\"",
+        "sql": "CREATE INDEX \"Achievement_experience_id_idx_9b808d03\" ON \"public\".\"Achievement\" (\"experience_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Achievement_experience_id_idx_9b808d03\" exists on \"Achievement\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Achievement_experience_id_idx_9b808d03\"",
+          "i",
+          "I",
+          "\"public\".\"Achievement\"",
+          "btree",
+          "[\"experience_id\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Achievement.Achievement_profile_id_idx_ff36b76a",
+    "label": "Create index \"Achievement_profile_id_idx_ff36b76a\" on \"Achievement\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Achievement_profile_id_idx_ff36b76a",
+        "table": "Achievement"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Achievement_profile_id_idx_ff36b76a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Achievement_profile_id_idx_ff36b76a\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Achievement_profile_id_idx_ff36b76a\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Achievement_profile_id_idx_ff36b76a\"",
+        "sql": "CREATE INDEX \"Achievement_profile_id_idx_ff36b76a\" ON \"public\".\"Achievement\" (\"profile_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Achievement_profile_id_idx_ff36b76a\" exists on \"Achievement\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Achievement_profile_id_idx_ff36b76a\"",
+          "i",
+          "I",
+          "\"public\".\"Achievement\"",
+          "btree",
+          "[\"profile_id\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Experience.Experience_profile_id_idx_ff36b76a",
+    "label": "Create index \"Experience_profile_id_idx_ff36b76a\" on \"Experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Experience_profile_id_idx_ff36b76a",
+        "table": "Experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Experience_profile_id_idx_ff36b76a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Experience_profile_id_idx_ff36b76a\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Experience_profile_id_idx_ff36b76a\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Experience_profile_id_idx_ff36b76a\"",
+        "sql": "CREATE INDEX \"Experience_profile_id_idx_ff36b76a\" ON \"public\".\"Experience\" (\"profile_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Experience_profile_id_idx_ff36b76a\" exists on \"Experience\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Experience_profile_id_idx_ff36b76a\"",
+          "i",
+          "I",
+          "\"public\".\"Experience\"",
+          "btree",
+          "[\"profile_id\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Project.Project_profile_id_idx_ff36b76a",
+    "label": "Create index \"Project_profile_id_idx_ff36b76a\" on \"Project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Project_profile_id_idx_ff36b76a",
+        "table": "Project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Project_profile_id_idx_ff36b76a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Project_profile_id_idx_ff36b76a\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Project_profile_id_idx_ff36b76a\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Project_profile_id_idx_ff36b76a\"",
+        "sql": "CREATE INDEX \"Project_profile_id_idx_ff36b76a\" ON \"public\".\"Project\" (\"profile_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Project_profile_id_idx_ff36b76a\" exists on \"Project\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Project_profile_id_idx_ff36b76a\"",
+          "i",
+          "I",
+          "\"public\".\"Project\"",
+          "btree",
+          "[\"profile_id\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Skill.Skill_profile_id_idx_ff36b76a",
+    "label": "Create index \"Skill_profile_id_idx_ff36b76a\" on \"Skill\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Skill_profile_id_idx_ff36b76a",
+        "table": "Skill"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Skill_profile_id_idx_ff36b76a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Skill_profile_id_idx_ff36b76a\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Skill_profile_id_idx_ff36b76a\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Skill_profile_id_idx_ff36b76a\"",
+        "sql": "CREATE INDEX \"Skill_profile_id_idx_ff36b76a\" ON \"public\".\"Skill\" (\"profile_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Skill_profile_id_idx_ff36b76a\" exists on \"Skill\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Skill_profile_id_idx_ff36b76a\"",
+          "i",
+          "I",
+          "\"public\".\"Skill\"",
+          "btree",
+          "[\"profile_id\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.SocialMedia.SocialMedia_profile_id_idx_ff36b76a",
+    "label": "Create index \"SocialMedia_profile_id_idx_ff36b76a\" on \"SocialMedia\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "SocialMedia_profile_id_idx_ff36b76a",
+        "table": "SocialMedia"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"SocialMedia_profile_id_idx_ff36b76a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"SocialMedia_profile_id_idx_ff36b76a\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"SocialMedia_profile_id_idx_ff36b76a\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"SocialMedia_profile_id_idx_ff36b76a\"",
+        "sql": "CREATE INDEX \"SocialMedia_profile_id_idx_ff36b76a\" ON \"public\".\"SocialMedia\" (\"profile_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"SocialMedia_profile_id_idx_ff36b76a\" exists on \"SocialMedia\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"SocialMedia_profile_id_idx_ff36b76a\"",
+          "i",
+          "I",
+          "\"public\".\"SocialMedia\"",
+          "btree",
+          "[\"profile_id\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Achievement.Achievement_profile_id_fkey",
+    "label": "Add foreign key \"Achievement_profile_id_fkey\" on \"Achievement\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Achievement_profile_id_fkey",
+        "table": "Achievement"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Achievement_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Achievement_profile_id_fkey",
+          "public",
+          "\"public\".\"Achievement\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Achievement_profile_id_fkey\" on \"Achievement\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Achievement_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Achievement\"\nADD CONSTRAINT \"Achievement_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"Profile\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Achievement_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Achievement_profile_id_fkey",
+          "public",
+          "\"public\".\"Achievement\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"Profile\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Achievement.Achievement_experience_id_fkey",
+    "label": "Add foreign key \"Achievement_experience_id_fkey\" on \"Achievement\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Achievement_experience_id_fkey",
+        "table": "Achievement"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Achievement_experience_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Achievement_experience_id_fkey",
+          "public",
+          "\"public\".\"Achievement\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Achievement_experience_id_fkey\" on \"Achievement\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Achievement_experience_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Achievement\"\nADD CONSTRAINT \"Achievement_experience_id_fkey\"\nFOREIGN KEY (\"experience_id\")\nREFERENCES \"public\".\"Experience\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Achievement_experience_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Achievement_experience_id_fkey",
+          "public",
+          "\"public\".\"Achievement\"",
+          "f",
+          "[\"experience_id\"]",
+          "\"public\".\"Experience\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Experience.Experience_profile_id_fkey",
+    "label": "Add foreign key \"Experience_profile_id_fkey\" on \"Experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Experience_profile_id_fkey",
+        "table": "Experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Experience_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Experience_profile_id_fkey",
+          "public",
+          "\"public\".\"Experience\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Experience_profile_id_fkey\" on \"Experience\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Experience_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Experience\"\nADD CONSTRAINT \"Experience_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"Profile\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Experience_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Experience_profile_id_fkey",
+          "public",
+          "\"public\".\"Experience\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"Profile\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Project.Project_profile_id_fkey",
+    "label": "Add foreign key \"Project_profile_id_fkey\" on \"Project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Project_profile_id_fkey",
+        "table": "Project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Project_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Project_profile_id_fkey",
+          "public",
+          "\"public\".\"Project\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Project_profile_id_fkey\" on \"Project\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Project_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Project\"\nADD CONSTRAINT \"Project_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"Profile\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Project_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Project_profile_id_fkey",
+          "public",
+          "\"public\".\"Project\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"Profile\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Skill.Skill_profile_id_fkey",
+    "label": "Add foreign key \"Skill_profile_id_fkey\" on \"Skill\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Skill_profile_id_fkey",
+        "table": "Skill"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Skill_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Skill_profile_id_fkey",
+          "public",
+          "\"public\".\"Skill\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Skill_profile_id_fkey\" on \"Skill\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Skill_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Skill\"\nADD CONSTRAINT \"Skill_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"Profile\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Skill_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Skill_profile_id_fkey",
+          "public",
+          "\"public\".\"Skill\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"Profile\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.SocialMedia.SocialMedia_profile_id_fkey",
+    "label": "Add foreign key \"SocialMedia_profile_id_fkey\" on \"SocialMedia\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "SocialMedia_profile_id_fkey",
+        "table": "SocialMedia"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"SocialMedia_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "SocialMedia_profile_id_fkey",
+          "public",
+          "\"public\".\"SocialMedia\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"SocialMedia_profile_id_fkey\" on \"SocialMedia\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"SocialMedia_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"SocialMedia\"\nADD CONSTRAINT \"SocialMedia_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"Profile\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"SocialMedia_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "SocialMedia_profile_id_fkey",
+          "public",
+          "\"public\".\"SocialMedia\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"Profile\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  }
+]

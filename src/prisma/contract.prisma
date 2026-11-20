@@ -1,0 +1,61 @@
+// use prisma-8
+
+model Profile {
+  id           Uuid          @id @default(sql`gen_random_uuid()`)
+  name         String
+  description  String
+  experiences  Experience[]
+  achievements Achievement[]
+  projects     Project[]
+  skills       Skill[]
+  social_media SocialMedia[]
+}
+
+model Experience {
+  id           Uuid          @id @default(sql`gen_random_uuid()`)
+  company_name String
+  position     String
+  start_date   Date
+  end_date     Date
+  profile_id   Uuid
+
+  profile      Profile       @relation(fields: [profile_id], references: [id])
+  achievements Achievement[]
+}
+
+model Achievement {
+  id            Uuid       @id @default(sql`gen_random_uuid()`)
+  title         String
+  description   String
+  profile_id    Uuid
+  experience_id Uuid
+
+  profile       Profile    @relation(fields: [profile_id], references: [id])
+  experience    Experience @relation(fields: [experience_id], references: [id])
+}
+
+model Project {
+  id         Uuid    @id @default(sql`gen_random_uuid()`)
+  name       String
+  url        String?
+  profile_id Uuid
+
+  profile    Profile @relation(fields: [profile_id], references: [id])
+}
+
+model Skill {
+  id         Uuid    @id @default(sql`gen_random_uuid()`)
+  name       String
+  profile_id Uuid
+
+  profile    Profile @relation(fields: [profile_id], references: [id])
+}
+
+model SocialMedia {
+  id         Uuid    @id @default(sql`gen_random_uuid()`)
+  name       String
+  url        String?
+  profile_id Uuid
+
+  profile    Profile @relation(fields: [profile_id], references: [id])
+}
