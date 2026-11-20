@@ -9,6 +9,8 @@ model Profile {
   projects     Project[]
   skills       Skill[]
   social_media SocialMedia[]
+
+  @@map("profiles")
 }
 
 model Experience {
@@ -18,9 +20,10 @@ model Experience {
   start_date   Date
   end_date     Date
   profile_id   Uuid
-
   profile      Profile       @relation(fields: [profile_id], references: [id])
   achievements Achievement[]
+
+  @@map("experiences")
 }
 
 model Achievement {
@@ -29,9 +32,10 @@ model Achievement {
   description   String
   profile_id    Uuid
   experience_id Uuid
-
   profile       Profile    @relation(fields: [profile_id], references: [id])
   experience    Experience @relation(fields: [experience_id], references: [id])
+
+  @@map("achievements")
 }
 
 model Project {
@@ -39,16 +43,18 @@ model Project {
   name       String
   url        String?
   profile_id Uuid
-
   profile    Profile @relation(fields: [profile_id], references: [id])
+
+  @@map("projects")
 }
 
 model Skill {
   id         Uuid    @id @default(sql`gen_random_uuid()`)
   name       String
   profile_id Uuid
-
   profile    Profile @relation(fields: [profile_id], references: [id])
+
+  @@map("skills")
 }
 
 model SocialMedia {
@@ -56,6 +62,7 @@ model SocialMedia {
   name       String
   url        String?
   profile_id Uuid
-
   profile    Profile @relation(fields: [profile_id], references: [id])
+
+  @@map("social_media")
 }

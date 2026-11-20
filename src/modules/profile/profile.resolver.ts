@@ -1,18 +1,19 @@
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
 import type { Profile } from '../../types/Profile.js';
+import type { Skill } from '../../types/Skill.js';
+import { SkillDataLoader } from '../skill/skill.data-loader.js';
 
-@Resolver()
+@Resolver('Profile')
 export class ProfileResolver {
+  constructor(readonly skillDataLoader: SkillDataLoader) {}
+
   @Query('profile')
-  getProfile(@Args('id') id: string): Profile {
+  getProfile(@Args('id') id: string): Omit<Profile, 'skills'> {
     const experience_id = crypto.randomUUID();
     return {
       id,
       name: 'Hleb Niunko',
       description: 'Hello my name is Hleb',
-      skills: [
-        { id: crypto.randomUUID(), name: 'Out-box-thinking', profile_id: id },
-      ],
       projects: [
         {
           id: crypto.randomUUID(),
@@ -49,5 +50,10 @@ export class ProfileResolver {
         },
       ],
     };
+  }
+
+  @ResolveField('skills')
+  async getSkills(@Parent() profile: { id: string }): Promise<Skill[]> {
+    return await this.skillDataLoader.loadByProfileId(profile.id);
   }
 }

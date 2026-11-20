@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'49779c1264f42b6949338d8f183172cdb9328490fe9036270eb57a3b4b16327f'>;
+  StorageHashBase<'82c721c72f9bf3de98197fb6f7d94d0959ab282d12e59f93ce257fef42c49e60'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -395,7 +395,7 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
-            readonly Achievement: {
+            readonly achievements: {
               columns: {
                 readonly description: {
                   readonly dataType: 'pg/text';
@@ -436,14 +436,14 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'Achievement_experience_id_idx_9b808d03';
-                  readonly prefix: 'Achievement_experience_id_idx';
+                  readonly name: 'achievements_experience_id_idx_9b808d03';
+                  readonly prefix: 'achievements_experience_id_idx';
                   readonly columns: readonly ['experience_id'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'Achievement_profile_id_idx_ff36b76a';
-                  readonly prefix: 'Achievement_profile_id_idx';
+                  readonly name: 'achievements_profile_id_idx_ff36b76a';
+                  readonly prefix: 'achievements_profile_id_idx';
                   readonly columns: readonly ['profile_id'];
                   readonly unique: false;
                 },
@@ -452,30 +452,30 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Achievement';
+                    readonly tableName: 'achievements';
                     readonly columns: readonly ['profile_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Profile';
+                    readonly tableName: 'profiles';
                     readonly columns: readonly ['id'];
                   };
                 },
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Achievement';
+                    readonly tableName: 'achievements';
                     readonly columns: readonly ['experience_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Experience';
+                    readonly tableName: 'experiences';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly Experience: {
+            readonly experiences: {
               columns: {
                 readonly company_name: {
                   readonly dataType: 'pg/text';
@@ -522,8 +522,8 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'Experience_profile_id_idx_ff36b76a';
-                  readonly prefix: 'Experience_profile_id_idx';
+                  readonly name: 'experiences_profile_id_idx_ff36b76a';
+                  readonly prefix: 'experiences_profile_id_idx';
                   readonly columns: readonly ['profile_id'];
                   readonly unique: false;
                 },
@@ -532,18 +532,18 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Experience';
+                    readonly tableName: 'experiences';
                     readonly columns: readonly ['profile_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Profile';
+                    readonly tableName: 'profiles';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly Profile: {
+            readonly profiles: {
               columns: {
                 readonly description: {
                   readonly dataType: 'pg/text';
@@ -573,7 +573,7 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
-            readonly Project: {
+            readonly projects: {
               columns: {
                 readonly id: {
                   readonly dataType: 'pg/uuid';
@@ -608,8 +608,8 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'Project_profile_id_idx_ff36b76a';
-                  readonly prefix: 'Project_profile_id_idx';
+                  readonly name: 'projects_profile_id_idx_ff36b76a';
+                  readonly prefix: 'projects_profile_id_idx';
                   readonly columns: readonly ['profile_id'];
                   readonly unique: false;
                 },
@@ -618,18 +618,18 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Project';
+                    readonly tableName: 'projects';
                     readonly columns: readonly ['profile_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Profile';
+                    readonly tableName: 'profiles';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly Skill: {
+            readonly skills: {
               columns: {
                 readonly id: {
                   readonly dataType: 'pg/uuid';
@@ -658,8 +658,8 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'Skill_profile_id_idx_ff36b76a';
-                  readonly prefix: 'Skill_profile_id_idx';
+                  readonly name: 'skills_profile_id_idx_ff36b76a';
+                  readonly prefix: 'skills_profile_id_idx';
                   readonly columns: readonly ['profile_id'];
                   readonly unique: false;
                 },
@@ -668,18 +668,18 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Skill';
+                    readonly tableName: 'skills';
                     readonly columns: readonly ['profile_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Profile';
+                    readonly tableName: 'profiles';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly SocialMedia: {
+            readonly social_media: {
               columns: {
                 readonly id: {
                   readonly dataType: 'pg/uuid';
@@ -714,8 +714,8 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'SocialMedia_profile_id_idx_ff36b76a';
-                  readonly prefix: 'SocialMedia_profile_id_idx';
+                  readonly name: 'social_media_profile_id_idx_ff36b76a';
+                  readonly prefix: 'social_media_profile_id_idx';
                   readonly columns: readonly ['profile_id'];
                   readonly unique: false;
                 },
@@ -724,12 +724,12 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'SocialMedia';
+                    readonly tableName: 'social_media';
                     readonly columns: readonly ['profile_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Profile';
+                    readonly tableName: 'profiles';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -746,18 +746,18 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
-    readonly Achievement: {
+    readonly achievements: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Achievement';
     };
-    readonly Experience: {
+    readonly experiences: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Experience';
     };
-    readonly Profile: { readonly namespace: 'public' & NamespaceId; readonly model: 'Profile' };
-    readonly Project: { readonly namespace: 'public' & NamespaceId; readonly model: 'Project' };
-    readonly Skill: { readonly namespace: 'public' & NamespaceId; readonly model: 'Skill' };
-    readonly SocialMedia: {
+    readonly profiles: { readonly namespace: 'public' & NamespaceId; readonly model: 'Profile' };
+    readonly projects: { readonly namespace: 'public' & NamespaceId; readonly model: 'Project' };
+    readonly skills: { readonly namespace: 'public' & NamespaceId; readonly model: 'Skill' };
+    readonly social_media: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'SocialMedia';
     };
@@ -816,7 +816,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'Achievement';
+              readonly table: 'achievements';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly description: { readonly column: 'description' };
@@ -880,7 +880,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'Experience';
+              readonly table: 'experiences';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly company_name: { readonly column: 'company_name' };
@@ -965,7 +965,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'Profile';
+              readonly table: 'profiles';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly description: { readonly column: 'description' };
@@ -1008,7 +1008,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'Project';
+              readonly table: 'projects';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly id: { readonly column: 'id' };
@@ -1048,7 +1048,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'Skill';
+              readonly table: 'skills';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly id: { readonly column: 'id' };
@@ -1091,7 +1091,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'SocialMedia';
+              readonly table: 'social_media';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly id: { readonly column: 'id' };

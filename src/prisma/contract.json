@@ -4,27 +4,27 @@
   "target": "postgres",
   "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
   "roots": {
-    "Achievement": {
+    "achievements": {
       "model": "Achievement",
       "namespace": "public"
     },
-    "Experience": {
+    "experiences": {
       "model": "Experience",
       "namespace": "public"
     },
-    "Profile": {
+    "profiles": {
       "model": "Profile",
       "namespace": "public"
     },
-    "Project": {
+    "projects": {
       "model": "Project",
       "namespace": "public"
     },
-    "Skill": {
+    "skills": {
       "model": "Skill",
       "namespace": "public"
     },
-    "SocialMedia": {
+    "social_media": {
       "model": "SocialMedia",
       "namespace": "public"
     }
@@ -124,7 +124,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "Achievement"
+              "table": "achievements"
             }
           },
           "Experience": {
@@ -227,7 +227,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "Experience"
+              "table": "experiences"
             }
           },
           "Profile": {
@@ -344,7 +344,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "Profile"
+              "table": "profiles"
             }
           },
           "Project": {
@@ -412,7 +412,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "Project"
+              "table": "projects"
             }
           },
           "Skill": {
@@ -470,7 +470,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "Skill"
+              "table": "skills"
             }
           },
           "SocialMedia": {
@@ -538,7 +538,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "SocialMedia"
+              "table": "social_media"
             }
           }
         }
@@ -550,7 +550,7 @@
       "public": {
         "entries": {
           "table": {
-            "Achievement": {
+            "achievements": {
               "columns": {
                 "description": {
                   "codecId": "pg/text@1",
@@ -585,40 +585,40 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "Achievement_profile_id_idx_ff36b76a"
+                    "name": "achievements_profile_id_idx_ff36b76a"
                   },
                   "source": {
                     "columns": [
                       "profile_id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Achievement"
+                    "tableName": "achievements"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Profile"
+                    "tableName": "profiles"
                   }
                 },
                 {
                   "index": {
-                    "name": "Achievement_experience_id_idx_9b808d03"
+                    "name": "achievements_experience_id_idx_9b808d03"
                   },
                   "source": {
                     "columns": [
                       "experience_id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Achievement"
+                    "tableName": "achievements"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Experience"
+                    "tableName": "experiences"
                   }
                 }
               ],
@@ -627,16 +627,16 @@
                   "columns": [
                     "experience_id"
                   ],
-                  "name": "Achievement_experience_id_idx_9b808d03",
-                  "prefix": "Achievement_experience_id_idx",
+                  "name": "achievements_experience_id_idx_9b808d03",
+                  "prefix": "achievements_experience_id_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "profile_id"
                   ],
-                  "name": "Achievement_profile_id_idx_ff36b76a",
-                  "prefix": "Achievement_profile_id_idx",
+                  "name": "achievements_profile_id_idx_ff36b76a",
+                  "prefix": "achievements_profile_id_idx",
                   "unique": false
                 }
               ],
@@ -647,7 +647,7 @@
               },
               "uniques": []
             },
-            "Experience": {
+            "experiences": {
               "columns": {
                 "company_name": {
                   "codecId": "pg/text@1",
@@ -687,21 +687,21 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "Experience_profile_id_idx_ff36b76a"
+                    "name": "experiences_profile_id_idx_ff36b76a"
                   },
                   "source": {
                     "columns": [
                       "profile_id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Experience"
+                    "tableName": "experiences"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Profile"
+                    "tableName": "profiles"
                   }
                 }
               ],
@@ -710,8 +710,8 @@
                   "columns": [
                     "profile_id"
                   ],
-                  "name": "Experience_profile_id_idx_ff36b76a",
-                  "prefix": "Experience_profile_id_idx",
+                  "name": "experiences_profile_id_idx_ff36b76a",
+                  "prefix": "experiences_profile_id_idx",
                   "unique": false
                 }
               ],
@@ -722,7 +722,7 @@
               },
               "uniques": []
             },
-            "Profile": {
+            "profiles": {
               "columns": {
                 "description": {
                   "codecId": "pg/text@1",
@@ -753,7 +753,7 @@
               },
               "uniques": []
             },
-            "Project": {
+            "projects": {
               "columns": {
                 "id": {
                   "codecId": "pg/uuid@1",
@@ -783,21 +783,21 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "Project_profile_id_idx_ff36b76a"
+                    "name": "projects_profile_id_idx_ff36b76a"
                   },
                   "source": {
                     "columns": [
                       "profile_id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Project"
+                    "tableName": "projects"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Profile"
+                    "tableName": "profiles"
                   }
                 }
               ],
@@ -806,8 +806,8 @@
                   "columns": [
                     "profile_id"
                   ],
-                  "name": "Project_profile_id_idx_ff36b76a",
-                  "prefix": "Project_profile_id_idx",
+                  "name": "projects_profile_id_idx_ff36b76a",
+                  "prefix": "projects_profile_id_idx",
                   "unique": false
                 }
               ],
@@ -818,7 +818,7 @@
               },
               "uniques": []
             },
-            "Skill": {
+            "skills": {
               "columns": {
                 "id": {
                   "codecId": "pg/uuid@1",
@@ -843,21 +843,21 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "Skill_profile_id_idx_ff36b76a"
+                    "name": "skills_profile_id_idx_ff36b76a"
                   },
                   "source": {
                     "columns": [
                       "profile_id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Skill"
+                    "tableName": "skills"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Profile"
+                    "tableName": "profiles"
                   }
                 }
               ],
@@ -866,8 +866,8 @@
                   "columns": [
                     "profile_id"
                   ],
-                  "name": "Skill_profile_id_idx_ff36b76a",
-                  "prefix": "Skill_profile_id_idx",
+                  "name": "skills_profile_id_idx_ff36b76a",
+                  "prefix": "skills_profile_id_idx",
                   "unique": false
                 }
               ],
@@ -878,7 +878,7 @@
               },
               "uniques": []
             },
-            "SocialMedia": {
+            "social_media": {
               "columns": {
                 "id": {
                   "codecId": "pg/uuid@1",
@@ -908,21 +908,21 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "SocialMedia_profile_id_idx_ff36b76a"
+                    "name": "social_media_profile_id_idx_ff36b76a"
                   },
                   "source": {
                     "columns": [
                       "profile_id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "SocialMedia"
+                    "tableName": "social_media"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "Profile"
+                    "tableName": "profiles"
                   }
                 }
               ],
@@ -931,8 +931,8 @@
                   "columns": [
                     "profile_id"
                   ],
-                  "name": "SocialMedia_profile_id_idx_ff36b76a",
-                  "prefix": "SocialMedia_profile_id_idx",
+                  "name": "social_media_profile_id_idx_ff36b76a",
+                  "prefix": "social_media_profile_id_idx",
                   "unique": false
                 }
               ],
@@ -949,7 +949,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "49779c1264f42b6949338d8f183172cdb9328490fe9036270eb57a3b4b16327f"
+    "storageHash": "82c721c72f9bf3de98197fb6f7d94d0959ab282d12e59f93ce257fef42c49e60"
   },
   "capabilities": {
     "postgres": {
