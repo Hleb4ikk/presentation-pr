@@ -17,6 +17,9 @@ COPY --from=build /app/package.json ./
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/src/graphql ./src/graphql
+COPY --from=build /app/prisma.config.ts ./
+COPY --from=build /app/migrations ./migrations
+COPY --from=build /app/src/prisma ./src/prisma
 
 EXPOSE 3000
 

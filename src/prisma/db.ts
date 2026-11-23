@@ -6,7 +6,19 @@ import contractJson from './contract.json' with { type: 'json' };
 
 export const contract = contractFromJson<Contract>(contractJson);
 
+const {
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_HOST,
+  POSTGRES_PORT,
+  POSTGRES_DB,
+} = process.env;
+
+export const DATABASE_URL =
+  `postgresql://${POSTGRES_USER}:${encodeURIComponent(POSTGRES_PASSWORD!)}` +
+  `@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`;
+
 export const db = postgres({
   contract,
-  url: process.env['DATABASE_URL']!,
+  url: DATABASE_URL,
 });
