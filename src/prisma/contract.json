@@ -587,6 +587,7 @@
                   "index": {
                     "name": "achievements_profile_id_idx_ff36b76a"
                   },
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "profile_id"
@@ -689,6 +690,7 @@
                   "index": {
                     "name": "experiences_profile_id_idx_ff36b76a"
                   },
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "profile_id"
@@ -785,6 +787,7 @@
                   "index": {
                     "name": "projects_profile_id_idx_ff36b76a"
                   },
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "profile_id"
@@ -845,6 +848,7 @@
                   "index": {
                     "name": "skills_profile_id_idx_ff36b76a"
                   },
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "profile_id"
@@ -910,6 +914,7 @@
                   "index": {
                     "name": "social_media_profile_id_idx_ff36b76a"
                   },
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "profile_id"
@@ -949,7 +954,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "82c721c72f9bf3de98197fb6f7d94d0959ab282d12e59f93ce257fef42c49e60"
+    "storageHash": "dc9ea2e1b5912681c396316640951272f9bfa546d8742728fb4fc5b8e191ac2c"
   },
   "capabilities": {
     "postgres": {

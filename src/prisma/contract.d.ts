@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'82c721c72f9bf3de98197fb6f7d94d0959ab282d12e59f93ce257fef42c49e60'>;
+  StorageHashBase<'dc9ea2e1b5912681c396316640951272f9bfa546d8742728fb4fc5b8e191ac2c'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;

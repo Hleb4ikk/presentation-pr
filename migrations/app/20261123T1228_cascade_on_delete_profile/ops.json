@@ -1,0 +1,512 @@
+[
+  {
+    "id": "dropConstraint.achievements.achievements_profile_id_fkey",
+    "label": "Drop constraint \"achievements_profile_id_fkey\" on \"achievements\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "achievements_profile_id_fkey",
+        "table": "achievements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"achievements_profile_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "achievements_profile_id_fkey",
+          "public",
+          "\"public\".\"achievements\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "constraint \"achievements_profile_id_fkey\" on \"achievements\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop constraint \"achievements_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"achievements\" DROP CONSTRAINT \"achievements_profile_id_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"achievements_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "achievements_profile_id_fkey",
+          "public",
+          "\"public\".\"achievements\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"achievements_profile_id_fkey\" on \"achievements\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropConstraint.experiences.experiences_profile_id_fkey",
+    "label": "Drop constraint \"experiences_profile_id_fkey\" on \"experiences\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "experiences_profile_id_fkey",
+        "table": "experiences"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"experiences_profile_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "experiences_profile_id_fkey",
+          "public",
+          "\"public\".\"experiences\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "constraint \"experiences_profile_id_fkey\" on \"experiences\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop constraint \"experiences_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"experiences\" DROP CONSTRAINT \"experiences_profile_id_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"experiences_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "experiences_profile_id_fkey",
+          "public",
+          "\"public\".\"experiences\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"experiences_profile_id_fkey\" on \"experiences\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropConstraint.projects.projects_profile_id_fkey",
+    "label": "Drop constraint \"projects_profile_id_fkey\" on \"projects\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "projects_profile_id_fkey",
+        "table": "projects"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"projects_profile_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "projects_profile_id_fkey",
+          "public",
+          "\"public\".\"projects\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "constraint \"projects_profile_id_fkey\" on \"projects\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop constraint \"projects_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"projects\" DROP CONSTRAINT \"projects_profile_id_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"projects_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "projects_profile_id_fkey",
+          "public",
+          "\"public\".\"projects\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"projects_profile_id_fkey\" on \"projects\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropConstraint.skills.skills_profile_id_fkey",
+    "label": "Drop constraint \"skills_profile_id_fkey\" on \"skills\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "skills_profile_id_fkey",
+        "table": "skills"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"skills_profile_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skills_profile_id_fkey",
+          "public",
+          "\"public\".\"skills\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "constraint \"skills_profile_id_fkey\" on \"skills\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop constraint \"skills_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"skills\" DROP CONSTRAINT \"skills_profile_id_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"skills_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skills_profile_id_fkey",
+          "public",
+          "\"public\".\"skills\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"skills_profile_id_fkey\" on \"skills\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropConstraint.social_media.social_media_profile_id_fkey",
+    "label": "Drop constraint \"social_media_profile_id_fkey\" on \"social_media\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "social_media_profile_id_fkey",
+        "table": "social_media"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"social_media_profile_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "social_media_profile_id_fkey",
+          "public",
+          "\"public\".\"social_media\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "constraint \"social_media_profile_id_fkey\" on \"social_media\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop constraint \"social_media_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"social_media\" DROP CONSTRAINT \"social_media_profile_id_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"social_media_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "social_media_profile_id_fkey",
+          "public",
+          "\"public\".\"social_media\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"social_media_profile_id_fkey\" on \"social_media\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.achievements.achievements_profile_id_fkey",
+    "label": "Add foreign key \"achievements_profile_id_fkey\" on \"achievements\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "achievements_profile_id_fkey",
+        "table": "achievements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"achievements_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "achievements_profile_id_fkey",
+          "public",
+          "\"public\".\"achievements\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"achievements_profile_id_fkey\" on \"achievements\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"achievements_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"achievements\"\nADD CONSTRAINT \"achievements_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"profiles\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"achievements_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "achievements_profile_id_fkey",
+          "public",
+          "\"public\".\"achievements\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"profiles\"",
+          "[\"id\"]",
+          "c",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.experiences.experiences_profile_id_fkey",
+    "label": "Add foreign key \"experiences_profile_id_fkey\" on \"experiences\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "experiences_profile_id_fkey",
+        "table": "experiences"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"experiences_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "experiences_profile_id_fkey",
+          "public",
+          "\"public\".\"experiences\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"experiences_profile_id_fkey\" on \"experiences\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"experiences_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"experiences\"\nADD CONSTRAINT \"experiences_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"profiles\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"experiences_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "experiences_profile_id_fkey",
+          "public",
+          "\"public\".\"experiences\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"profiles\"",
+          "[\"id\"]",
+          "c",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.projects.projects_profile_id_fkey",
+    "label": "Add foreign key \"projects_profile_id_fkey\" on \"projects\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "projects_profile_id_fkey",
+        "table": "projects"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"projects_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "projects_profile_id_fkey",
+          "public",
+          "\"public\".\"projects\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"projects_profile_id_fkey\" on \"projects\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"projects_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"projects\"\nADD CONSTRAINT \"projects_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"profiles\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"projects_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "projects_profile_id_fkey",
+          "public",
+          "\"public\".\"projects\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"profiles\"",
+          "[\"id\"]",
+          "c",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.skills.skills_profile_id_fkey",
+    "label": "Add foreign key \"skills_profile_id_fkey\" on \"skills\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "skills_profile_id_fkey",
+        "table": "skills"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"skills_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "skills_profile_id_fkey",
+          "public",
+          "\"public\".\"skills\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"skills_profile_id_fkey\" on \"skills\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"skills_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"skills\"\nADD CONSTRAINT \"skills_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"profiles\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"skills_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "skills_profile_id_fkey",
+          "public",
+          "\"public\".\"skills\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"profiles\"",
+          "[\"id\"]",
+          "c",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.social_media.social_media_profile_id_fkey",
+    "label": "Add foreign key \"social_media_profile_id_fkey\" on \"social_media\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "social_media_profile_id_fkey",
+        "table": "social_media"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"social_media_profile_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "social_media_profile_id_fkey",
+          "public",
+          "\"public\".\"social_media\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"social_media_profile_id_fkey\" on \"social_media\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"social_media_profile_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"social_media\"\nADD CONSTRAINT \"social_media_profile_id_fkey\"\nFOREIGN KEY (\"profile_id\")\nREFERENCES \"public\".\"profiles\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"social_media_profile_id_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "social_media_profile_id_fkey",
+          "public",
+          "\"public\".\"social_media\"",
+          "f",
+          "[\"profile_id\"]",
+          "\"public\".\"profiles\"",
+          "[\"id\"]",
+          "c",
+          "a"
+        ]
+      }
+    ]
+  }
+]
