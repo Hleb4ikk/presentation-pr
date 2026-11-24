@@ -23,4 +23,4 @@ COPY --from=build /app/src/prisma ./src/prisma
 
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "npx prisma db migrate && node dist/seed.js && exec node dist/main.js"]
