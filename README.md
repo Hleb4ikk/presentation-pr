@@ -7,7 +7,7 @@ Backend-приложение, которое презентует меня ка�
 > **Запрашивать можно сразу, без `id`.** Запрос `profile` без аргумента
 > возвращает профиль из базы (визитка рассчитана на один профиль). Аргумент
 > `id` — опциональный: он нужен, только если профилей несколько; тогда id
-> можно найти в логах сида (`docker compose logs migrate | grep "Seeded profile"`).
+> можно найти в логах сида (`docker compose logs app | grep "Seeded profile"`).
 > Несуществующий id возвращает ошибку `NOT_FOUND`.
 
 Стек (Node.js, TypeScript, NestJS, Prisma, GraphQL, PostgreSQL, Docker) задан
@@ -221,5 +221,5 @@ src/
     └── social-media/        # модуль ссылок
 migrations/                  # миграции под версионным контролем
 Dockerfile                   # многоступенчатая сборка
-docker-compose.yml           # database → migrate → app
+docker-compose.yml           # database (healthy) → app (миграции + сид + старт)
 ```
