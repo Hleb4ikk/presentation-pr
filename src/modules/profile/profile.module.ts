@@ -6,6 +6,8 @@ import { ExperienceModule } from '../experience/experience.module.js';
 import { SocialMediaModule } from '../social-media/social-media.module.js';
 import { AchievementModule } from '../achievement/achievement.module.js';
 import { ProjectModule } from '../project/project.module.js';
+import { ProfileService } from './profile.service.js';
+import { ProfileRepository } from './profile.repository.js';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { ProjectModule } from '../project/project.module.js';
     AchievementModule,
     ProjectModule,
   ],
-  providers: [ProfileResolver],
+  providers: [ProfileResolver, ProfileService, ProfileRepository],
   exports: [ProfileResolver],
 })
 export class ProfileModule {}

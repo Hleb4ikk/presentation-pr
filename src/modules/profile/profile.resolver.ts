@@ -10,6 +10,7 @@ import { AchievementDataLoader } from '../achievement/achievement.data-loader.js
 import { Achievement } from '../../types/Achievement.js';
 import { ProjectDataLoader } from '../project/project.data-loader.js';
 import { Project } from '../../types/Project.js';
+import { ProfileService } from './profile.service.js';
 
 @Resolver('Profile')
 export class ProfileResolver {
@@ -19,15 +20,14 @@ export class ProfileResolver {
     readonly socialMediaLoader: SocialMediaDataLoader,
     readonly achievementDataLoader: AchievementDataLoader,
     readonly projectDataLoader: ProjectDataLoader,
+    readonly profileService: ProfileService,
   ) {}
 
   @Query('profile')
-  getProfile(@Args('id') id: string): Profile {
-    return {
-      id,
-      name: 'Hleb Niunko',
-      description: 'Hello my name is Hleb',
-    };
+  async getProfile(
+    @Args('id') id?: string,
+  ): Promise<Pick<Profile, 'id' | 'name' | 'description'>> {
+    return await this.profileService.fetchProfile(id);
   }
 
   @ResolveField('skills')
