@@ -5,6 +5,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ProfileModule } from './modules/profile/profile.module.js';
 import { UUIDResolver, DateResolver } from 'graphql-scalars';
+import { formatError } from './utils/format-error.util.js';
 @Module({
   imports: [
     ConfigModule,
@@ -17,6 +18,7 @@ import { UUIDResolver, DateResolver } from 'graphql-scalars';
       },
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+      formatError,
     }),
     ProfileModule,
   ],
