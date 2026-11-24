@@ -1,132 +1,227 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# presentation-pr — цифровая визитка
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend-приложение, которое презентует меня как специалиста: профиль, навыки,
+опыт работы с достижениями и проекты. Данные отдаются через GraphQL API,
+интерактивный Apollo Sandbox доступен по корневому пути `/graphql`.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+> **Важно: для запросов нужен `id` профиля.** При заполнении базы сид
+> выводит его в логи строкой вида `Seeded profile 7beb6c0f-...`. После запуска
+> стека найдите id командой `docker compose logs migrate | grep "Seeded profile"`
+> и подставьте в запрос `profile(id: "...")`. Если id не тот — профиль вернётся
+> с пустыми связями.
 
-## Description
+Стек (Node.js, TypeScript, NestJS, Prisma, GraphQL, PostgreSQL, Docker) задан
+условиями задания. Ниже — обоснование решений, принятых внутри этого стека.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Архитектурные решения и их обоснование
 
-## Project setup
+### 1. Слоистая структура модулей: resolver → data-loader → service → repository
 
-```bash
-$ npm install
+Каждая доменная сущность — отдельный модуль с четырьмя слоями:
+
+```
+resolver (GraphQL)  →  data-loader  →  service  →  repository  →  DatabaseService (Prisma)
 ```
 
-## Compile and run the project
+- **Resolver** — только маппинг GraphQL-операций (`@Query`, `@ResolveField`)
+  на вызовы слоя данных. Ни строчки бизнес-логики и ни одного обращения к БД.
+- **DataLoader** — батчинг обращений к данным в рамках одного запроса
+  (request-scoped провайдер).
+- **Service** — бизнес-операции над сущностью.
+- **Repository** — единственное место с запросами к БД; ORM за его пределы
+  не выходит.
+- **DatabaseService** — владеет подключением и его жизненным циклом
+  (`connect`/`close` через хуки NestJS).
 
-```bash
-# development
-$ npm run start
+**Почему так.** Альтернатива — «толстые резолверы», обращающиеся к базе
+напрямую: на трёх сущностях это работает, но логика доступа к данным
+размазывается по GraphQL-слою, и замена источника данных превращается в
+переписывание резолверов. При слоистой структуре каждый слой меняется
+независимо, а граница «GraphQL ≠ данные» физически закреплена в файлах.
 
-# watch mode
-$ npm run start:dev
+### 2. Schema-first GraphQL
 
-# production mode
-$ npm run start:prod
+Схема описана декларативно в `src/graphql/*.graphql` и подключается через
+`typePaths`; резолверы реализуют её контракт.
+
+**Почему так.** Альтернатива — code-first (схема генерируется из декораторов).
+Schema-first выбран, потому что `.graphql`-файлы — это читаемый контракт API,
+который ревьюится отдельно от реализации: форма API видна целиком в одном
+месте и не размыта по классам. Цена решения — ручная синхронизация схемы и
+резолверов — на API такого размера несущественна.
+
+### 3. DataLoader на каждую связь (проблема N+1)
+
+Вложенный запрос «профиль → навыки/опыт/достижения/проекты» в наивной
+реализации порождает SQL-запрос на каждое поле каждой сущности. DataLoader
+собирает все `profileId` в один запрос
+`WHERE profile_id IN (...)` и раскладывает результат обратно по ключам.
+
+**Почему так.** Любой вложенный запрос выполняется фиксированным числом
+обращений к БД независимо от объёма данных. DataLoader — request-scoped:
+батч не переиспользуется между запросами, и устаревший кеш одного клиента
+не протекает к другому.
+
+### 4. Модель данных и каскадное удаление
+
+```
+Profile 1──N Skill
+Profile 1──N Project
+Profile 1──N SocialMedia
+Profile 1──N Experience 1──N Achievement
+Profile 1─────────────N Achievement
 ```
 
-## Run tests
+`Achievement` связано и с профилем, и с конкретным местом работы — это
+позволяет показывать достижения в разрезе опыта, а не общим списком.
+
+На всех внешних ключах, ссылающихся на `Profile`, — `ON DELETE CASCADE`.
+
+**Почему так.** Целостность гарантируется базой, а не кодом: «сиротские»
+записи невозможны в принципе, при любом клиенте БД. Побочный эффект —
+очистка в сиде сводится к одному удалению профиля вместо шести удалений
+в правильном порядке (меньше кода — меньше мест для ошибки порядка удаления).
+
+### 5. Prisma 8: контракт + миграции под версионным контролем
+
+Модель данных описана в `src/prisma/contract.prisma`; изменение схемы идёт
+по циклу: правка контракта → `migration plan` (планировщик сам строит diff) →
+файл миграции коммитится → `db migrate` применяет его атомарно (одна
+транзакция на запуск).
+
+**Почему так.** Альтернатива — `db update` (diff прямо в живую базу): быстрее,
+но не оставляет миграции, и воспроизвести состояние схемы на другой машине
+нельзя. Для проверки «с нуля» и для деплоя нужна воспроизводимость, поэтому
+формальный путь с миграциями в git. Версии CLI зафиксированы точно
+(`prisma@8.0.0-rc.34`, `@prisma/cli-engine@0.10.0`): caret-диапазон подтянул
+бы несовместимый rc — уже поймано на реальном падении в контейнере.
+
+## Структура базы данных
+
+Шесть таблиц: `profiles`, `skills`, `experiences`, `achievements`, `projects`,
+`social_media`. Ниже — почему схема устроена именно так.
+
+### Почему нормализация, а не JSON-колонки в `profiles`
+
+Альтернативой было хранить навыки, опыт и проекты JSONB-массивами внутри
+`profiles` — одна таблица, один запрос без связей. Отказался от этого варианта
+по следующим причинам:
+
+- **Целостность.** В JSON нет внешних ключей и ограничений: `FOREIGN KEY`,
+  `NOT NULL`, `UNIQUE` на уровне базы не дадут записать достижение
+  несуществующему опыту или сохранить строку вместо даты. В JSONB такие
+  гарантии существуют только «по договорённости» с кодом приложения.
+- **Лёгкие B-tree индексы.** Возможность полноценно использовать B-Tree индексы на полях,
+  тогда как в JSON вложенных полях это было бы невозможно.
+- **Дешёвые обновления (MVCC).** В PostgreSQL изменение строки создаёт её
+  новую физическую копию. Обновление одного поля в строке с тяжёлым JSONB
+  перезаписывает всю строку целиком; в нормализованной схеме обновляется
+  одна крошечная запись в нужной таблице.
+- **Точечная адресация и чтение.** Отдельный навык или проект обновляется и
+  удаляется по своему `id`, а не перезаписью всего массива. И наоборот —
+  список профилей читается из лёгкой таблицы `profiles`, без вычитывания с
+  диска вложенных документов со всеми связями.
+- **Отсутствие аномалий записи.** Не нужно создавать «пустой» профиль, чтобы
+  просто завести сущность в справочнике, и дублировать одни и те же данные
+  в нескольких местах JSON-документа.
+
+| Переменная          | Назначение                                                   |
+| ------------------- | ------------------------------------------------------------ |
+| `APP_PORT`          | Порт HTTP-сервера                                            |
+| `APP_HOST`          | Хост приложения                                              |
+| `POSTGRES_HOST`     | Хост PostgreSQL (`localhost` локально, `database` в Compose) |
+| `POSTGRES_PORT`     | Порт PostgreSQL                                              |
+| `POSTGRES_USER`     | Пользователь БД                                              |
+| `POSTGRES_PASSWORD` | Пароль БД                                                    |
+| `POSTGRES_DB`       | Имя базы                                                     |
+
+Шаблон — в `.env.example`.
+
+## Запуск
+
+### Docker Compose (рекомендуется, «с нуля» одной командой)
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cp .env.example .env   # заполнить значения
+docker compose up --build
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+После старта Apollo Sandbox доступен на `http://localhost:3000/graphql`.
+Полный сброс с пересозданием данных:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker compose down -v && docker compose up --build
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Локальная разработка
 
-## Observability
-
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
-
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
-
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
-
-To add it to this project, run this and approve the code it prints at [observe.nestjs.com/link](https://observe.nestjs.com/link) - signing up for free if you have no account:
+Требуется запущенный PostgreSQL и заполненный `.env`:
 
 ```bash
-$ npx @nestjs/observe link
+npm install
+npm run db:migrate:dev   # применить миграции
+npm run db:seed          # заполнить базу данными
+npm run start:dev        # watch-режим
 ```
 
-It installs `@nestjs/observe`, wires it into `AppModule` and `main.ts`, and writes the app key and secret into `.env`, which every `nest start` script (`start`, `start:dev`, `start:debug`) then loads. In production, set `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET` in the environment instead.
+## Пример запроса
 
-Or do it by hand:
+`id` профиля возьмите из логов сида (см. примечание в начале файла):
 
-```bash
-$ npm install @nestjs/observe
+```graphql
+query {
+  profile(id: "<profile-id>") {
+    name
+    description
+    skills {
+      name
+    }
+    experience {
+      company_name
+      position
+      start_date
+      end_date
+    }
+    achievements {
+      title
+      description
+    }
+    projects {
+      name
+      url
+    }
+    social_media {
+      name
+      url
+    }
+  }
+}
 ```
 
-Then follow the [setup guide](https://docs.nestjs.com/observability/sdk) - it takes a single import and an app key.
+## Структура проекта
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```
+src/
+├── app.module.ts            # корневой модуль: GraphQL (Apollo Sandbox) + formatError
+├── main.ts                  # bootstrap: порт берётся из валидированного конфига
+├── seed.ts                  # идемпотентный сид (один вложенный Profile.create)
+├── graphql/                 # schema-first: декларативная GraphQL-схема (*.graphql)
+├── types/                   # доменные TypeScript-типы
+├── utils/                   # formatError — нормализация ошибок GraphQL
+├── prisma/                  # контракт данных и клиент Prisma
+│   ├── contract.prisma      # декларативная модель БД
+│   └── db.ts                # подключение, URL собирается из POSTGRES_*
+├── schemas/                 # zod-схема переменных окружения
+└── modules/
+    ├── config/              # валидированный конфиг приложения
+    ├── database/            # владелец подключения к БД
+    ├── profile/             # резолвер профиля (точка входа GraphQL)
+    ├── skill/               # модуль навыков: service + repository + data-loader
+    ├── experience/          # модуль опыта
+    ├── achievement/         # модуль достижений
+    ├── project/             # модуль проектов
+    └── social-media/        # модуль ссылок
+migrations/                  # миграции под версионным контролем
+Dockerfile                   # многоступенчатая сборка
+docker-compose.yml           # database → migrate → app
+```

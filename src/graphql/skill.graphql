@@ -1,0 +1,5 @@
+type Skill {
+  id: UUID!
+  name: String!
+  profile_id: UUID!
+}
