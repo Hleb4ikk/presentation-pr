@@ -1,5 +1,15 @@
 import 'dotenv/config';
-import { db } from './prisma/db.js';
+import { createDbClient } from './prisma/db.js';
+
+// Сид — standalone-скрипт вне жизненного цикла NestJS,
+// поэтому читает env напрямую и создаёт клиент через ту же фабрику.
+const db = createDbClient({
+  host: process.env['POSTGRES_HOST']!,
+  port: Number(process.env['POSTGRES_PORT']),
+  user: process.env['POSTGRES_USER']!,
+  password: process.env['POSTGRES_PASSWORD']!,
+  database: process.env['POSTGRES_DB']!,
+});
 
 const PROFILE_NAME = 'Hleb Niunko';
 

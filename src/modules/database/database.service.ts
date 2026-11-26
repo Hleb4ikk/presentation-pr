@@ -1,9 +1,14 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { db } from '../../prisma/db.js';
+import { createDbClient, DbClient } from '../../prisma/db.js';
+import { ConfigService } from '../config/config.service.js';
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnModuleDestroy {
-  public readonly client = db;
+  public readonly client: DbClient;
+
+  constructor(configService: ConfigService) {
+    this.client = createDbClient(configService.database);
+  }
 
   async onModuleInit() {
     await this.client.connect();
