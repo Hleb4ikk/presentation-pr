@@ -30,8 +30,10 @@ resolver (GraphQL)  →  data-loader  →  service  →  repository  →  Databa
 - **Service** — бизнес-операции над сущностью.
 - **Repository** — единственное место с запросами к БД; ORM за его пределы
   не выходит.
-- **DatabaseService** — владеет подключением и его жизненным циклом
-  (`connect`/`close` через хуки NestJS).
+- **DatabaseService** — создаёт клиент через фабрику `createDbClient` из
+  валидированного `ConfigService` (DI) и владеет его жизненным циклом
+  (`connect`/`close` через хуки NestJS). Инстанс один на процесс: контейнер
+  DI раздаёт всем модулям один и тот же синглтон.
 
 **Почему так.** Альтернатива — «толстые резолверы», обращающиеся к базе
 напрямую: на трёх сущностях это работает, но логика доступа к данным
@@ -208,17 +210,17 @@ src/
 ├── utils/                   # formatError — нормализация ошибок GraphQL
 ├── prisma/                  # контракт данных и клиент Prisma
 │   ├── contract.prisma      # декларативная модель БД
-│   └── db.ts                # подключение, URL собирается из POSTGRES_*
+│   └── db.ts                # фабрика клиента: createDbClient + сборка URL из POSTGRES_*
 ├── schemas/                 # zod-схема переменных окружения
 └── modules/
     ├── config/              # валидированный конфиг приложения
     ├── database/            # владелец подключения к БД
-    ├── profile/             # резолвер профиля (точка входа GraphQL)
-    ├── skill/               # модуль навыков: service + repository + data-loader
-    ├── experience/          # модуль опыта
-    ├── achievement/         # модуль достижений
-    ├── project/             # модуль проектов
-    └── social-media/        # модуль ссылок
+    ├── profile/             # запрос profile: resolver + service + repository
+    ├── skill/               # навыки: resolver + service + repository + data-loader
+    ├── experience/          # опыт: resolver + service + repository + data-loader
+    ├── achievement/         # достижения: resolver + service + repository + data-loader
+    ├── project/             # проекты: resolver + service + repository + data-loader
+    └── social-media/        # ссылки: resolver + service + repository + data-loader
 migrations/                  # миграции под версионным контролем
 Dockerfile                   # многоступенчатая сборка
 docker-compose.yml           # database (healthy) → app (миграции + сид + старт)
